@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% if page.title %}{{ page.title }} · {% endif %}{{ config.title }}</title>
+  <meta name="description" content="{{ config.description | default(value='') }}">
+  <link rel="alternate" type="application/atom+xml" title="Feed" href="{{ get_url(path='atom.xml') }}">
+  <style>
+    body{max-width:800px;margin:3rem auto;padding:0 1rem;line-height:1.6;font-family:ui-sans-serif,system-ui,-apple-system;}
+    header,footer{opacity:.85}
+    nav a{margin-right:1rem}
+    h1,h2,h3{line-height:1.2}
+    .muted{opacity:.7}
+  </style>
+</head>
+<body>
+<header>
+  <h1><a href="{{ get_url(path='') }}">{{ config.title }}</a></h1>
+  <nav>
+    <a href="{{ get_url(path='') }}">Home</a>
+    <a href="{{ get_url(path='about') }}">About</a>
+    <a href="{{ get_url(path='projects') }}">Projects</a>
+    <a href="{{ get_url(path='blog') }}">Blog</a>
+  </nav>
+  <p class="muted">{{ config.description }}</p>
+</header>
+<main>
+  {% block content %}{% endblock content %}
+</main>
+<footer class="muted" style="margin-top:3rem">
+  © {{ now() | date(format="%Y") }} {{ config.title }} · Built with Zola · <a href="{{ get_url(path='atom.xml') }}">Feed</a>
+</footer>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ section.title | default(value="") }}</h1>
+{{ section.content | safe }}
+{% if paginator %}
+  <ul>
+  {% for page in paginator.pages %}
+    <li><a href="{{ page.permalink }}">{{ page.title }}</a>
+      <span class="muted"> — {{ page.date | default(value="") }}</span></li>
+  {% endfor %}
+  </ul>
+{% endif %}
+{% endblock content %}
