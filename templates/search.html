@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Search — {{ config.title }}{% endblock %}
+
+{% block content %}
+<h1>Search</h1>
+
+<input id="searchInput" type="search" placeholder="Type to search…" aria-label="Search" autofocus>
+<p id="searchStatus" style="font-size:.9rem;color:#666;margin:.5rem 0 0;"></p>
+<div id="searchResults"></div>
+
+<!-- Pass the index URL to JS via a data-attribute (used by search.js if present) -->
+<script id="search-data" data-index-url="{{ get_url(path='search_index.en.json') }}"></script>
+
+<!-- Libraries + app script (use get_url so paths work in dev and prod) -->
+<script src="{{ get_url(path='elasticlunr.min.js') }}" defer></script>
+<script src="{{ get_url(path='js/search.js') }}" defer></script>
+<script>
+  // Hydrate search input from ?q= in URL and trigger search
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get("q");
+    if (q) {
+      const input = document.getElementById("searchInput");
+      if (input) {
+        input.value = q;
+        // Defer search trigger until search.js is loaded
+        window.addEventListener("DOMContentLoaded", () => {
+          if (typeof window.__doSearch === "function") {
+            window.__doSearch(q);
+          }
+        });
+      }
+    }
+  })();
+</script>
+{% endblock %}

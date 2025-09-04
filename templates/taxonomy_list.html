@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block head %}
+  {# Canonical URL for the taxonomy list (e.g., /categories or /tags) #}
+  <link rel="canonical" href="{{ get_url(path=taxonomy.name) }}">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ taxonomy.name | capitalize }} · {{ config.title }}">
+  <meta property="og:description" content="{{ config.description }}">
+  <meta property="og:url" content="{{ get_url(path=taxonomy.name) }}">
+  <meta name="twitter:card" content="summary">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": {{ taxonomy.name | capitalize | json_encode }},
+    "url": {{ get_url(path=taxonomy.name) | json_encode }},
+    "description": {{ config.description | json_encode }}
+  }
+  </script>
+{% endblock head %}
+
+{% block content %}
+  <h1>{{ taxonomy.name | capitalize }}</h1>
+
+  {% if terms and terms | length > 0 %}
+    <ul>
+      {% for term in terms %}
+        <li>
+          <a href="{{ term.permalink }}">{{ term.name }}</a>
+          <span class="muted"> — {{ term.pages | length }} post{% if term.pages | length != 1 %}s{% endif %}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted">No {{ taxonomy.name }} yet.</p>
+  {% endif %}
+{% endblock content %}

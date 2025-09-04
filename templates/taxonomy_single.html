@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <link rel="canonical" href="{{ term.permalink | safe }}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ term.name }} · {{ config.title }}">
+  <meta property="og:description" content="{{ config.description }}">
+  <meta property="og:url" content="{{ term.permalink | safe }}">
+  <meta name="twitter:card" content="summary">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": {{ term.name | json_encode }},
+    "url": {{ term.permalink | json_encode }},
+    "description": {{ config.description | json_encode }}
+  }
+  </script>
+{% endblock head %}
+
+{% block content %}
+  {% include "partials/breadcrumbs.html" %}
+
+  <h1>{{ term.name }}</h1>
+  {% if term.description %}<p class="muted">{{ term.description }}</p>{% endif %}
+
+  {% if paginator and paginator.pages %}
+    <ul>
+      {% for page in paginator.pages %}
+        <li>
+          <a href="{{ page.permalink }}">{{ page.title }}</a>
+          {% if page.date %}<span class="muted"> — {{ page.date | date(format="%Y-%m-%d") }}</span>{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+
+    {% if paginator.previous or paginator.next %}
+      <nav class="muted">
+        {% if paginator.previous %}<a href="{{ paginator.previous }}">← Newer</a>{% endif %}
+        {% if paginator.previous and paginator.next %} · {% endif %}
+        {% if paginator.next %}<a href="{{ paginator.next }}">Older →</a>{% endif %}
+      </nav>
+    {% endif %}
+  {% else %}
+    {% if term.pages and term.pages | length > 0 %}
+      <ul>
+        {% for page in term.pages %}
+          <li>
+            <a href="{{ page.permalink }}">{{ page.title }}</a>
+            {% if page.date %}<span class="muted"> — {{ page.date | date(format="%Y-%m-%d") }}</span>{% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="muted">No posts yet.</p>
+    {% endif %}
+  {% endif %}
+
+  <p class="muted"><a href="{{ get_url(path=taxonomy.name) }}">← All {{ taxonomy.name }}</a></p>
+{% endblock content %}

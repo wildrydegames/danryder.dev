@@ -1,0 +1,24 @@
+{# Breadcrumbs partial: safe for both pages and sections #}
+<nav aria-label="Breadcrumb">
+  <ul class="breadcrumb" style="list-style:none;padding:0;margin:0 0 1rem 0;display:flex;gap:.5rem;flex-wrap:wrap">
+    <li><a href="{{ get_url(path='') }}">Home</a></li>
+
+    {# On a page: optionally show first category, then the page title #}
+    {% if page %}
+      {% if page.taxonomies and page.taxonomies.categories and page.taxonomies.categories | length > 0 %}
+        {% set cat = page.taxonomies.categories[0] %}
+        <li>›</li>
+        <li><a href="{{ get_taxonomy_url(kind='categories', name=cat) }}">{{ cat }}</a></li>
+      {% endif %}
+      <li>›</li>
+      <li aria-current="page" class="muted">{{ page.title }}</li>
+
+    {# On a section: show the section title only #}
+    {% elif section %}
+      {% if section.title %}
+        <li>›</li>
+        <li aria-current="page" class="muted">{{ section.title }}</li>
+      {% endif %}
+    {% endif %}
+  </ul>
+</nav>

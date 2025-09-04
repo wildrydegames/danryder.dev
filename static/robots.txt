@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://danryder.dev/sitemap.xml

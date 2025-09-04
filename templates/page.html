@@ -1,5 +1,101 @@
 {% extends "base.html" %}
+{% block head %}
+  <link rel="canonical" href="{{ page.permalink | safe }}">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="{{ page.title }}">
+  <meta property="og:description" content="{{ page.description | default(value=config.description) }}">
+  <meta property="og:url" content="{{ page.permalink | safe }}">
+  {% if page.extra.og_image %}
+    <meta property="og:image" content="{{ get_url(path=page.extra.og_image) }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{{ get_url(path=page.extra.og_image) }}">
+  {% else %}
+    <meta name="twitter:card" content="summary">
+  {% endif %}
+  <meta name="twitter:title" content="{{ page.title }}">
+  <meta name="twitter:description" content="{{ page.description | default(value=config.description) }}">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": {{ page.title | json_encode }},{% if page.description %}
+    "description": {{ page.description | json_encode }},{% else %}
+    "description": {{ config.description | json_encode }},{% endif %}
+    "url": {{ page.permalink | json_encode }},{% if page.date %}
+    "datePublished": "{{ page.date | date(format="%Y-%m-%d") }}",{% endif %}
+    "dateModified": "{{ page.updated | default(value=page.date) | date(format="%Y-%m-%d") }}",
+    "author": { "@type": "Person", "name": "Dan Ryder" },
+    "publisher": { "@type": "Person", "name": "Dan Ryder" },{% if page.taxonomies and page.taxonomies.tags %}
+    "keywords": {{ page.taxonomies.tags | join(sep=", ") | json_encode }},{% endif %}{% if page.taxonomies and page.taxonomies.categories %}
+    "articleSection": {{ page.taxonomies.categories | join(sep=", ") | json_encode }},{% endif %}
+    "mainEntityOfPage": { "@type": "WebPage", "@id": {{ page.permalink | json_encode }} }{% if page.extra.og_image %},
+    "image": {{ get_url(path=page.extra.og_image) | json_encode }}{% endif %}
+  }
+  </script>
+
+  {# BreadcrumbList JSON-LD: Home > (first category?) > Post #}
+  {% if page.taxonomies and page.taxonomies.categories and page.taxonomies.categories | length > 0 %}
+    {% set cat = page.taxonomies.categories | first %}
+    {% set cat_slug = cat | slugify %}
+  {% endif %}
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": {{ get_url(path='', absolute=true) | json_encode }} }{% if cat is defined %},
+      { "@type": "ListItem", "position": 2, "name": {{ cat | json_encode }}, "item": {{ get_url(path='categories/' ~ cat_slug ~ '/', absolute=true) | json_encode }} },
+      { "@type": "ListItem", "position": 3, "name": {{ page.title | json_encode }}, "item": {{ page.permalink | json_encode }} }{% else %},
+      { "@type": "ListItem", "position": 2, "name": {{ page.title | json_encode }}, "item": {{ page.permalink | json_encode }} }{% endif %}
+    ]
+  }
+  </script>
+{% endblock head %}
 {% block content %}
-<h1>{{ page.title }}</h1>
-{{ page.content | safe }}
+{% include "partials/breadcrumbs.html" %}
+  <h1>{{ page.title }}</h1>
+  {% if page.date %}<p class="muted">{{ page.date | date(format="%Y-%m-%d") }}</p>{% endif %}
+
+  {{ page.content | safe }}
+
+  {% if page.taxonomies and page.taxonomies.categories %}
+  <p class="muted">Categories:
+    {% for c in page.taxonomies.categories %}
+      <a href="{{ get_taxonomy_url(kind='categories', name=c) }}">{{ c }}</a>{% if not loop.last %}, {% endif %}
+    {% endfor %}
+  </p>
+  {% endif %}
+
+  {% if page.taxonomies and page.taxonomies.tags %}
+  <p class="muted">Tags:
+    {% for t in page.taxonomies.tags %}
+      <a href="{{ get_taxonomy_url(kind='tags', name=t) }}">{{ t }}</a>{% if not loop.last %}, {% endif %}
+    {% endfor %}
+  </p>
+  {% endif %}
+
+  <!-- Visually-hidden taxonomy text so search can index categories/tags -->
+  <div class="sr-only">
+    {% if page.taxonomies and page.taxonomies.categories %}
+      Categories: {{ page.taxonomies.categories | join(sep=", ") }}.
+    {% endif %}
+    {% if page.taxonomies and page.taxonomies.tags %}
+      Tags: {{ page.taxonomies.tags | join(sep=", ") }}.
+    {% endif %}
+  </div>
+  {% if page.later or page.earlier %}
+  <hr>
+  <nav class="post-nav">
+    {% if page.later %}
+      <a class="prev" href="{{ page.later.permalink }}">← {{ page.later.title }}</a>
+    {% endif %}
+    {% if page.later and page.earlier %} · {% endif %}
+    {% if page.earlier %}
+      <a class="next" href="{{ page.earlier.permalink }}">{{ page.earlier.title }} →</a>
+    {% endif %}
+  </nav>
+  {% endif %}
 {% endblock content %}

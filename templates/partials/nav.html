@@ -1,0 +1,25 @@
+<nav aria-label="Primary">
+  {% set cur = current_path | default(value="/") %}
+
+  {# Precompute URLs so we can compare against current_path #}
+  {% set url_home = get_url(path='') %}
+  {% set url_blog = get_url(path='@/blog/_index.md') %}
+  {% set url_projects = get_url(path='@/projects/_index.md') %}
+  {% set url_about = get_url(path='@/about/_index.md') %}
+  {% set url_search = get_url(path='search') %}
+
+  <a href="{{ url_home }}" {% if cur == '/' %}aria-current="page"{% endif %}>Home</a>
+  <a href="{{ url_blog }}" {% if cur is starting_with(url_blog) %}aria-current="page"{% endif %}>Blog</a>
+  <a href="{{ url_projects }}" {% if cur is starting_with(url_projects) %}aria-current="page"{% endif %}>Projects</a>
+  <a href="{{ url_about }}" {% if cur is starting_with(url_about) %}aria-current="page"{% endif %}>About</a>
+  <a href="{{ url_search }}" {% if cur is starting_with(url_search) %}aria-current="page"{% endif %}>Search</a>
+
+  {# Taxonomies (optional quick links) #}
+  {% if config.taxonomies and config.taxonomies | length > 0 %}
+    <span class="muted">|</span>
+    {% set url_categories = get_url(path='/categories') %}
+    {% set url_tags = get_url(path='/tags') %}
+    <a class="muted" href="{{ url_categories }}" {% if cur is starting_with(url_categories) %}aria-current="page"{% endif %}>Categories</a>
+    <a class="muted" href="{{ url_tags }}" {% if cur is starting_with(url_tags) %}aria-current="page"{% endif %}>Tags</a>
+  {% endif %}
+</nav>

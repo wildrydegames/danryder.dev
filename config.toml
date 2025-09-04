@@ -1,9 +1,35 @@
-base_url = "https://wildrydegames.github.io/danryder.dev/"
+base_url = "https://danryder.dev/"  # local dev uses zola serve; keep this as your canonical URL
 title = "Dan Ryder"
 description = "Game dev, systems thinking, building cool things."
-compile_sass = false
+default_language = "en"
 build_search_index = true
-
-# ✅ correct key in Zola 0.21
 generate_feeds = true
 feed_filenames = ["atom.xml"]
+generate_sitemap = true
+
+[search]
+index_format = "elasticlunr_json"  # or "elasticlunr_js"
+include_content = true
+
+# Taxonomies: repeat [[taxonomies]] for each one
+[[taxonomies]]
+name = "categories"
+paginate_by = 10
+
+[[taxonomies]]
+name = "tags"
+paginate_by = 20
+
+# -------- Site metadata used by templates/SEO --------
+[extra]
+author_name = "Dan Ryder"
+org_name = "Wild Ryde Games"
+logo_path = "/images/logo.png"            # place a file at static/images/logo.png
+default_og_image = "/images/og-default.jpg"  # place a file at static/images/og-default.jpg
+
+[extra.social]
+github   = ""   # e.g. "https://github.com/danryder"
+x        = ""   # e.g. "https://x.com/danryder"
+linkedin = ""   # e.g. "https://www.linkedin.com/in/danryder"
+youtube  = ""   # optional
+website  = "https://danryder.dev/"
