@@ -13,6 +13,7 @@
   <a href="{{ url_projects }}" {% if cur is starting_with(url_projects) %}aria-current="page"{% endif %}>Projects</a>
   <a href="{{ url_about }}" {% if cur is starting_with(url_about) %}aria-current="page"{% endif %}>About</a>
   <a href="{{ url_search }}" {% if cur is starting_with(url_search) %}aria-current="page"{% endif %}>Search</a>
+  <li><a href="{{ get_url(path="learning-csharp-unity") }}">Learning C# &amp; Unity</a></li>
 
   {# Taxonomies (optional quick links) #}
   {% if config.taxonomies and config.taxonomies | length > 0 %}
