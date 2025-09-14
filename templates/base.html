@@ -2,129 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-
-  {# ---- derive page/section vars ---- #}
-  {% set page_title = config.title %}
-  {% if page %}{% set page_title = page.title ~ " · " ~ config.title %}
-  {% elif section and section.title %}{% set page_title = section.title ~ " · " ~ config.title %}{% endif %}
-
-  {% set canonical_url = get_url(path='', absolute=true) %}
-  {% if page %}{% set canonical_url = page.permalink %}
-  {% elif section %}{% set canonical_url = section.permalink %}{% endif %}
-
-  {% set meta_desc = config.description %}
-  {% if section and section.description %}{% set meta_desc = section.description %}{% endif %}
-  {% if page and page.description %}{% set meta_desc = page.description %}{% endif %}
-
-  <title>{{ page_title }}</title>
-  <meta name="description" content="{{ meta_desc }}">
-  <link rel="canonical" href="{{ canonical_url | safe }}">
-
-  <!-- Open Graph / Twitter -->
-  <meta property="og:title" content="{{ page and page.title or section and section.title or config.title }}">
-  <meta property="og:description" content="{{ meta_desc }}">
-  {% if page %}
-    <meta property="og:type" content="article">
-  {% else %}
-    <meta property="og:type" content="website">
-  {% endif %}
-  <meta property="og:url" content="{{ canonical_url | safe }}">
-  <meta property="og:image" content="{{ get_url(path='og.png', absolute=true) | safe }}">
-  <meta property="og:site_name" content="{{ config.title }}">
-  <meta name="twitter:card" content="summary_large_image">
-
-  <link rel="alternate" type="application/atom+xml" title="Feed" href="{{ get_url(path='atom.xml', absolute=true) }}">
-
-  <style>
-    body{max-width:800px;margin:3rem auto;padding:0 1rem;line-height:1.6;font-family:ui-sans-serif,system-ui,-apple-system}
-    header,footer{opacity:.85}
-    nav a{margin-right:1rem}
-    /* Active nav state */
-    nav a[aria-current="page"]{ font-weight:600; text-decoration:underline; }
-    h1,h2,h3{line-height:1.2}
-    .muted{opacity:.7}
-
-    /* ---- Search UI polish ---- */
-    .search-input{margin:.25rem 0 .5rem 0;padding:.35rem .55rem;border:1px solid #ccc;border-radius:6px}
-    .search-status{font-size:.875rem;opacity:.75;margin:.25rem 0 1rem}
-    .search-results{list-style:none;margin:0;padding:0}
-    .search-results li{margin:0 0 1rem 0}
-    .search-result-title{font-weight:600;text-decoration:none}
-    .search-snippet{font-size:.95rem;color:#444;margin:.25rem 0 0}
-    .search-count{font-size:.875rem;opacity:.7;margin-left:.5rem}
-    mark{background:#fff3a3;padding:0 .1em;border-radius:2px}
-
-    /* Screen-reader only utility */
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-
-    /* Accessibility & focus */
-    .skip-link{
-      position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;
-    }
-    .skip-link:focus{
-      left:1rem;top:1rem;width:auto;height:auto;background:#fffa;border:1px solid #333;
-      padding:.4rem .6rem;border-radius:6px;z-index:1000;
-    }
-    a:focus-visible, button:focus-visible, input:focus-visible{
-      outline:2px solid #7c3aed; outline-offset:2px;
-    }
-    /* Prefer dark scheme if user asks for it */
-    @media (prefers-color-scheme: dark){
-      body{ background:#111; color:#e9e9e9; }
-      a{ color:#9ecbff; }
-      hr{ border-color:#2a2a2a; }
-      .search-snippet{ color:#cfcfcf; }
-    }
-  </style>
-
-  <!-- JSON-LD (WebSite + SearchAction) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "{{ config.title }}",
-    "url": "{{ get_url(path='') | safe }}",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "{{ get_url(path='search') | safe }}?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
-  {% if page %}
-  <!-- JSON-LD (BlogPosting) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": "{{ page.title | safe }}",
-    "description": "{{ meta_desc }}",
-    "url": "{{ page.permalink | safe }}"{% if page.date %},
-    "datePublished": "{{ page.date | date(format="%Y-%m-%d") }}"{% endif %},
-    "author": { "@type": "Person", "name": "Dan Ryder" },
-    "publisher": { "@type": "Person", "name": "Dan Ryder" }{% if page.taxonomies and page.taxonomies.tags %},
-    "keywords": "{{ page.taxonomies.tags | join(sep=', ') }}"{% endif %}{% if page.taxonomies and page.taxonomies.categories %},
-    "articleSection": "{{ page.taxonomies.categories | join(sep=', ') }}"{% endif %}
-  }
-  </script>
-  {% endif %}
+  <title>{% block title %}{{ config.title }}{% endblock title %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ get_url(path="css/workbench.css") }}">
+  {% block seo %}{% endblock seo %}
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <header>
-    <h1><a href="{{ get_url(path='') }}">{{ config.title }}</a></h1>
-    {% include "partials/nav.html" %}
-    <hr>
+  <!-- Status strip / top bar -->
+  <header class="wb-status">
+    <div class="wb-status__right">
+      Last update: {{ now() | date(format="%d-%m-%Y %H:%M") }}
+    </div>
   </header>
+  
+<!-- Workbench menubar -->
+<nav class="wb-menubar">
+  <div class="wb-menubar__inner">
+    <div class="wb-menu-items">
+      <!-- Add wb-menu-home ONLY here -->
+      <a class="wb-menu-item wb-menu-home" href="/">{{ config.title }} {{ config.extra.version | default(value="3.1") }}</a>
+      <a class="wb-menu-item" href="/blog/">blog</a>
+      <a class="wb-menu-item" href="/files/">files</a>
+      <a class="wb-menu-item" href="/puters/">puters</a>
+      <a class="wb-menu-item" href="/about/">about</a>
+      <a class="wb-menu-item" href="/search/">search</a>
+    </div>
+  </div>
+</nav>
 
-  <main id="main">
-    {% block content %}{% endblock content %}
+  <main class="wb-container">
+    <div class="wb-grid">
+      <section class="wb-col-main">
+        {% block content %}{% endblock content %}
+      </section>
+      <aside class="wb-col-side">
+        {% include "partials/sidebar.html" %}
+      </aside>
+    </div>
   </main>
-
-  <footer>
-    <hr>
-    <p class="muted">© {{ now() | date(format="%Y") }} {{ config.title }} · Built with Zola</p>
-  </footer>
 </body>
 </html>

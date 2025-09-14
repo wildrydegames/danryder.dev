@@ -1,50 +1,67 @@
 {% extends "base.html" %}
-
-{% block head %}
-  <link rel="canonical" href="{{ section.permalink | safe }}">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="{{ section.title | default(value=config.title) }}">
-  <meta property="og:description" content="{{ section.description | default(value=config.description) }}">
-  <meta property="og:url" content="{{ section.permalink | safe }}">
-  <meta name="twitter:card" content="summary">
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": {% if section.title %}{{ section.title | json_encode }}{% else %}{{ config.title | json_encode }}{% endif %},
-    "url": {{ section.permalink | json_encode }},
-    "description": {% if section.description %}{{ section.description | json_encode }}{% else %}{{ config.description | json_encode }}{% endif %}
-  }
-  </script>
-{% endblock head %}
+{% block title %}{{ config.title }} – Home{% endblock title %}
 
 {% block content %}
-  {{ section.content | safe }}
 
-  <h2>Latest posts</h2>
-  {% set blog = get_section(path="blog/_index.md") %}
-  {% if blog and blog.pages and blog.pages | length > 0 %}
-    <ul>
-      {% for page in blog.pages | slice(end=5) %}
+<!-- Welcome window -->
+<div class="wb-window">
+  <div class="wb-titlebar">
+    <span class="wb-title">Welcome to {{ config.title }}</span>
+    <div class="wb-gadgets">
+      <button class="wb-gadget wb-zoom" aria-label="Zoom"></button>
+      <button class="wb-gadget wb-depth" aria-label="Depth"></button>
+      <button class="wb-gadget wb-close" aria-label="Close"></button>
+    </div>
+  </div>
+  <div class="wb-content wb-window-body">
+    <h1 class="wb-h1">Dan’s tech notes</h1>
+    <p class="wb-sub">Retrocoding, game dev, learning, notes.</p>
+    <p>From time to time I write about Unity, C#, design docs, and old machines. You’ll find dev logs for <em>Tower To The Gods</em>, study notes for my Business Diploma, and the occasional nostalgia trip.</p>
+  </div>
+</div>
+
+<!-- Recent posts -->
+<div class="wb-window">
+  <div class="wb-titlebar">
+    <span class="wb-title">Recent posts:</span>
+    <div class="wb-gadgets">
+      <button class="wb-gadget wb-zoom" aria-label="Zoom"></button>
+      <button class="wb-gadget wb-depth" aria-label="Depth"></button>
+      <button class="wb-gadget wb-close" aria-label="Close"></button>
+    </div>
+  </div>
+  <div class="wb-content wb-window-body">
+    <ul class="wb-posts">
+      {% set posts = get_section(path="blog/_index.md") %}
+      {% for page in posts.pages | slice(end=6) %}
         <li>
+          <span class="wb-date">[{{ page.date | date(format="%d-%m-%Y") }}]</span>
           <a href="{{ page.permalink }}">{{ page.title }}</a>
-          {% if page.date %}<span class="muted">— {{ page.date | date(format="%Y-%m-%d") }}</span>{% endif %}
         </li>
       {% endfor %}
     </ul>
-    <p><a href="{{ get_url(path='blog') }}">All posts →</a></p>
-  {% else %}
-    <p class="muted">No posts yet. When you publish to <code>content/blog/</code> they’ll appear here.</p>
-  {% endif %}
+    <p class="wb-more"><a href="/blog/">View all →</a></p>
+  </div>
+</div>
 
-  {% set cats = get_taxonomy(kind="categories") %}
-  {% if cats and cats.items and cats.items | length > 0 %}
-    <h3>Browse by category</h3>
-    <p>
-      {% for term in cats.items %}
-        <a href="{{ term.permalink }}">{{ term.name }}</a>{% if not loop.last %} · {% endif %}
-      {% endfor %}
-    </p>
-  {% endif %}
+<!-- Site changelog -->
+<div class="wb-window">
+  <div class="wb-titlebar">
+    <span class="wb-title">Site changelog:</span>
+    <div class="wb-gadgets">
+      <button class="wb-gadget wb-zoom" aria-label="Zoom"></button>
+      <button class="wb-gadget wb-depth" aria-label="Depth"></button>
+      <button class="wb-gadget wb-close" aria-label="Close"></button>
+    </div>
+  </div>
+  <div class="wb-content wb-window-body">
+    <ul class="wb-changelog">
+      <li>Added Workbench skin; rebuilt homepage layout.</li>
+      <li>Created devlog list/single templates.</li>
+      <li>Optimized images; added OG/Twitter cards.</li>
+    </ul>
+    <p class="wb-note">This site is and will be personal-made.</p>
+  </div>
+</div>
+
 {% endblock content %}
