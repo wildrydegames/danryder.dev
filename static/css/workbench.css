@@ -1,0 +1,283 @@
+/* @override 
+	http://127.0.0.1:1111/css/workbench.css
+	https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600&display=swap */
+
+:root{
+  --desk:#bcbfc6;           /* desktop grey */
+  --win:#dfdfdf;            /* window face (Amiga grey) */
+  --ink:#10141f;            /* text */
+  --title:#6b86c6;          /* title bar light */
+  --title2:#3f558e;         /* title bar dark */
+  --bevel-hi:#ffffff;       /* top/left bevel */
+  --bevel-lo:#9aa3b4;       /* bottom/right bevel */
+  --grid:1120px;
+}
+
+@font-face { font-family:"TopazPlus_a500"; src:url("/fonts/TopazPlus_a500_v1.0.woff2") format("woff2"), url("/fonts/TopazPlus_a500_v1.0.ttf") format("truetype"); font-display:swap; }
+@font-face { font-family:"TopazPlus_a1200"; src:url("/fonts/TopazPlus_a1200_v1.0.woff2") format("woff2"), url("/fonts/TopazPlus_a1200_v1.0.ttf") format("truetype"); font-display:swap; }
+@font-face { font-family:"Topaz_a500"; src:url("/fonts/Topaz_a500_v1.0.woff2") format("woff2"), url("/fonts/Topaz_a500_v1.0.ttf") format("truetype"); font-display:swap; }
+@font-face { font-family:"Topaz_a1200"; src:url("/fonts/Topaz_a1200_v1.0.woff2") format("woff2"), url("/fonts/Topaz_a1200_v1.0.ttf") format("truetype"); font-display:swap; }
+@font-face { font-family:"MicroKnight"; src:url("/fonts/MicroKnight_v1.0.woff2") format("woff2"), url("/fonts/MicroKnight_v1.0.ttf") format("truetype"); font-display:swap; }
+@font-face { font-family:"MicroKnightPlus"; src:url("/fonts/MicroKnightPlus_v1.0.woff2") format("woff2"), url("/fonts/MicroKnightPlus_v1.0.ttf") format("truetype"); font-display:swap; }
+@font-face { font-family:"P0T-NOoDLE"; src:url("/fonts/P0T-NOoDLE_v1.0.woff2") format("woff2"), url("/fonts/P0T-NOoDLE_v1.0.ttf") format("truetype"); font-display:swap; }
+@font-face { font-family:"mO'sOul"; src:url("/fonts/mO'sOul_v1.0.woff2") format("woff2"), url("/fonts/mO'sOul_v1.0.ttf") format("truetype"); font-display:swap; }
+
+html, body {
+  font-family: "TopazPlus_a1200", monospace;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 1.5px;
+  background:#9b9b9b;   /* <- THIS is the page background */
+  color:#000000;
+
+  /* make it bitmap-crisp */
+  -webkit-font-smoothing: none;  /* Safari/Chrome */
+  font-smooth: never;             /* Safari legacy (non-standard) */
+  text-rendering: optimizeSpeed;  /* skip fancy shaping */
+  font-variant-ligatures: none;   /* no ligatures in pixel fonts */
+  font-synthesis: none;           /* no faux bold/italic */
+}
+
+a{color:#d5d5d5;text-decoration:none;border-bottom:1px dashed #0b2e7a}
+a:hover{border-bottom-style:solid}
+
+.wb-status{
+  position:sticky;top:0;z-index:50;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;height:25px;padding:0 14px;
+  background:#5674ae;border-bottom:1px solid #aeb4bf;
+  font-family:"TopazPlus_a1200",monospace;font-size:16px;letter-spacing:.2px;
+}
+
+.wb-container{max-width:var(--grid);margin:0 auto;padding:18px;}
+.wb-grid{display:grid;grid-template-columns:2fr 1fr;gap:18px;}
+@media (max-width:980px){.wb-grid{grid-template-columns:1fr;}}
+
+/* Removed first occurrence of .wb-window rule block here */
+
+/* Removed .wb-titlebar, .wb-menu-item typography block here */
+
+.wb-content{padding:14px;}
+.wb-h1{font-family:"TopazPlus_a1200",monospace;font-size:16px;line-height:1;letter-spacing:.3px;margin:0 0 6px 0}
+.wb-sub{opacity:.8;margin:0 0 12px 0}
+
+.wb-posts{list-style:none;padding:0;margin:0}
+.wb-posts li{margin:6px 0}
+.wb-date{opacity:.7;margin-right:6px}
+
+.wb-changelog{margin:0 0 8px 18px}
+.wb-note{margin-top:10px;border-top:1px solid #b9bfcb;padding-top:8px;opacity:.85}
+
+.wb-links{list-style:none;margin:0;padding:0}
+.wb-links li{margin:6px 0}
+
+.wb-avatar{display:block;width:100%;max-width:220px;margin:4px auto 10px;image-rendering:pixelated;border:2px solid var(--title2)}
+
+.wb-more{margin-top:10px}
+
+/* --- Workbench menubar & search --- */
+.wb-menubar {
+  background:#ffffff;
+  border:1px solid #000000;   /* full black border */
+  border-bottom:2px solid #000000; /* make bottom line thicker if you want that strong divider */
+}
+.wb-menubar__inner{max-width:var(--grid);margin:0 auto;display:flex;align-items:center;justify-content:flex-start;gap:12px;padding:0px 12px;}
+.wb-menu-items{display:flex;gap:8px;flex-wrap:wrap}
+.wb-menu-item{display:inline-block;padding:4px 8px;border:1px solid transparent;border-radius:2px;color:#111;line-height:1;text-decoration:none;font-family:"TopazPlus_a1200", monospace;font-size:16px}
+.wb-menu-item:hover:not(.wb-menu-home),
+.wb-menu-item:focus:not(.wb-menu-home) {
+  background:#000000;
+  color:#ffffff;
+  border-color:#000000;
+}
+
+/* --- Pixel font clarity: avoid faux bold/italic --- */
+b, strong, h1, h2, h3, h4, h5, h6 { font-weight: 400; }
+.wb-status strong { font-weight: 400; }
+/* If emphasis is needed, prefer underline over faux-italic */
+em { font-style: normal; text-decoration: underline dotted; text-underline-offset: 2px; }
+
+html, body, p, span, div, li, a, b, strong, h1, h2, h3, h4, h5, h6, em {
+  font-weight: 400 !important;
+}
+
+/* ===== Workbench window + titlebar (WB3.1 style) ===== */
+
+.wb-window {
+  /* outer 3D frame */
+  background: var(--win, #dfe4ee);
+  border: 2px solid #000;              /* base */
+  border-top-color:#565656;            /* dark TL */
+  border-left-color:#565656;
+  border-right-color:#cfcfcf;          /* light BR */
+  border-bottom-color:#cfcfcf;
+  box-shadow:
+    inset -1px -1px 0 #000,            /* inner BR shadow */
+    inset  1px  1px 0 #fff;            /* inner TL highlight */
+  border-radius:0;
+  margin-bottom:16px;
+  position: relative;
+}
+
+/* Title bar strip */
+.wb-titlebar{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:8px;
+  padding:4px 6px;
+  background:#5674AE;                  /* your blue */
+  color:#fff;
+  font-family:"TopazPlus_a1200", monospace;
+  font-size:16px; line-height:1;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.75),  /* top highlight */
+    inset 0 -1px 0 #1b335f;                /* bottom crease */
+}
+
+/* Title text */
+.wb-title{ letter-spacing:1px; white-space:nowrap; }
+
+/* Content area inside the window */
+.wb-window-body{ padding:10px 12px; }
+
+/* Gadgets on the right */
+.wb-gadgets{ display:flex; gap:4px; }
+
+/* Reset native button look so we can pixel-style them */
+.wb-gadget{
+  appearance:none; -webkit-appearance:none; border:0; padding:0; margin:0;
+  width:14px; height:14px; display:inline-block; background:#dfe4ee;
+  /* 3D bezel */
+  border:2px solid #000;
+  border-top-color:#565656; border-left-color:#565656;
+  border-right-color:#cfcfcf; border-bottom-color:#cfcfcf;
+  line-height:0; cursor:default;
+}
+
+/* Optional tiny symbol */
+.wb-gadget::after{
+  content:""; display:block; width:8px; height:2px; margin:4px auto 0; background:#000;
+}
+.wb-gadget.wb-close::after{ width:6px; height:6px; margin:3px auto 0; background:#000; }
+.wb-gadget.wb-depth::after{ width:8px; height:2px; }
+.wb-gadget.wb-zoom::after { width:8px; height:2px; }
+
+/* --- 1) Titlebar left gadget (like WB square at far-left) --- */
+.wb-titlebar { position: relative; }
+.wb-titlebar::before {
+  content:"";
+  position:absolute; left:6px; top:5px;
+  width:14px; height:14px; background:#dfe4ee;
+  border:2px solid #000;
+  border-top-color:#565656; border-left-color:#565656;   /* dark TL */
+  border-right-color:#cfcfcf; border-bottom-color:#cfcfcf;/* light BR */
+}
+.wb-title { margin-left:24px; }  /* make room for the left gadget */
+
+/* --- 2) Bottom resize bar with blue bevel --- */
+.wb-window { position: relative; }
+.wb-window::after {
+  content:"";
+  display:block;
+  height:10px;                       /* thickness of the resize strip */
+  background:#5674AE;                /* same blue as titlebar */
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.70),  /* top highlight */
+    inset 0 -2px 0 #1b335f;                /* bottom crease */
+  border-top:1px solid #1b335f;           /* subtle divider from body */
+}
+
+/* --- 3) Crisper inner edge around window body (subtle) --- */
+.wb-window-body { position: relative; }
+.wb-window-body::before {
+  content:"";
+  position:absolute; inset:2px; pointer-events:none;
+  border:1px solid #8ba0c2;           /* mid blue-grey line */
+  box-shadow:
+    inset 0 1px 0 #cbd7ea,           /* top inner highlight */
+    inset 1px 0 0 #cbd7ea,           /* left inner highlight */
+    inset -1px 0 0 #304a7a,          /* right inner crease */
+    inset 0 -1px 0 #304a7a;          /* bottom inner crease */
+  opacity:.9;
+}
+
+/* (Optional) tighten spacing so the new chrome reads correctly */
+.wb-window-body { padding: 10px 12px 12px; }
+.wb-gadgets { margin-right:4px; }
+
+.wb-content,
+.wb-window-body {
+    background: #dfdfdf; /* light Amiga Workbench grey */
+}
+
+/* 1) Any window body you want to scroll: give it a fixed max-height */
+.wb-window-body.wb-scroll-300 { max-height: 300px; overflow-y: auto; }
+.wb-window-body.wb-scroll-220 { max-height: 220px; overflow-y: auto; }
+/* Always show scrollbar in .wb-window-body */
+.wb-window-body {
+  overflow-y: scroll; /* always show scrollbar */
+}
+/* fallback spacing so text doesn't kiss the rail */
+
+/* 2) WebKit scrollbar skin (Safari/Chrome/Edge) */
+.wb-window-body::-webkit-scrollbar {
+  width: 18px;                /* thickness of the right rail */
+  background: transparent;
+}
+
+/* Rail */
+.wb-window-body::-webkit-scrollbar-track {
+  background: #5674AE;        /* same titlebar blue */
+  box-shadow:
+    inset  1px  0    0 #cbd7ea, /* left inner highlight */
+    inset -1px  0    0 #1b335f, /* right inner crease   */
+    inset  0    1px  0 #cbd7ea, /* top inner highlight  */
+    inset  0   -1px  0 #1b335f; /* bottom crease        */
+}
+
+/* Thumb (beveled light block) */
+.wb-window-body::-webkit-scrollbar-thumb {
+  background: #dfe4ee;        /* light plastic */
+  border: 2px solid #000;
+  border-top-color:#565656; border-left-color:#565656; /* dark TL */
+  border-right-color:#cfcfcf; border-bottom-color:#cfcfcf; /* light BR */
+  border-radius: 0;
+  box-shadow:
+    inset  1px  1px 0 #fff,    /* inner TL sparkle */
+    inset -1px -1px 0 #9aa7bf; /* inner BR shade   */
+}
+
+/* Buttons (▲ / ▼ squares) */
+.wb-window-body::-webkit-scrollbar-button:single-button {
+  height: 18px;
+  background: #5674AE;
+  border: 2px solid #000;
+  border-top-color:#565656; border-left-color:#565656;
+  border-right-color:#cfcfcf; border-bottom-color:#cfcfcf;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Up triangle */
+.wb-window-body::-webkit-scrollbar-button:vertical:decrement {
+  background-image: url("data:image/svg+xml;utf8,\
+  <svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'>\
+    <polygon points='6,3 10,9 2,9' fill='%23000'/></svg>");
+}
+
+/* Down triangle */
+.wb-window-body::-webkit-scrollbar-button:vertical:increment {
+  background-image: url("data:image/svg+xml;utf8,\
+  <svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'>\
+    <polygon points='2,3 10,3 6,9' fill='%23000'/></svg>");
+}
+
+/* (Optional) make the rail sit one hair “inside” like WB */
+.wb-window-body::-webkit-scrollbar-corner { background: #5674AE; }
+
+/* Firefox: you can't bevel it, but at least pick colors */
+@supports (scrollbar-color: auto) {
+  .wb-window-body {
+    scrollbar-color: #aebad0 #5674AE; /* thumb / track */
+    scrollbar-width: thin;
+  }
+}
